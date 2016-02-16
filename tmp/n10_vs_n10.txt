@@ -1,0 +1,44 @@
+1 8 2 3 4 5 6 7 0 9 
+
+2015-11-14 09:18:02
+
+G1: n10
+n    = 10
+m    = 39
+#connectedComponents = 1
+Largest connectedComponents (nodes, edges) = (10, 39) 
+
+G2: n10
+n    = 10
+m    = 39
+#connectedComponents = 1
+Largest connectedComponents (nodes, edges) = (10, 39) 
+
+Method: SANA_s3
+Temperature schedule:
+k: 482.578
+l: 558.928
+Optimize: 
+s3: 1
+Execution time: 4m
+
+execution time = 42.952
+
+Scores:
+ec: 1
+ics: 1
+s3: 1
+lccs: 1
+nc: 0.7
+
+Common subgraph:
+n    = 10
+m    = 39
+#connectedComponents = 1
+Largest connectedComponents (nodes, edges) = (10, 39) 
+
+Common connected subgraphs:
+Graph  n   m   alig-edges  indu-edges  EC        ICS       S3        
+G1     10  39  39          39          1.000000  1.000000  1.000000  
+CCS_0  10  39  39          39          1.000000  1.000000  1.000000  
+

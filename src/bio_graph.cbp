@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="bio_graph" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../bio-graph-dbg" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="./gexf_graph/yeasthc.gexf --generate-display 640 480 --accelerate-structure none" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../bio-graph" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="./txt_graph/n100.txt --generate-display 640 480 --accelerate-structure none" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-Ofast" />
+					<Add option="-flto" />
+					<Add option="-march=native" />
+				</Compiler>
+				<Linker>
+					<Add option="-Ofast" />
+					<Add option="-flto" />
+					<Add option="-march=native" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-fexceptions" />
+			<Add option="`pkg-config gtk+-3.0 --cflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gtk+-3.0 --libs`" />
+			<Add option="-lxerces-c" />
+		</Linker>
+		<Unit filename="bio_graph.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="bio_graph.h" />
+		<Unit filename="common.h" />
+		<Unit filename="graph_display.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="graph_display.h" />
+		<Unit filename="graph_exporter.c">
+			<Option compilerVar="CPP" />
+		</Unit>
+		<Unit filename="graph_exporter.h" />
+		<Unit filename="graph_importer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="graph_importer.h" />
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
