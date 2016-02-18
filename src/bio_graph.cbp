@@ -12,7 +12,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="./gexf_graph/yeasthc.gexf --generate-display 640 480 --accelerate-structure none" />
+				<Option parameters="--convert ./gw_graph/athal.gw -o ./athal.gexf" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
@@ -38,6 +38,7 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
 			<Add option="`pkg-config gtk+-3.0 --cflags`" />
 		</Compiler>

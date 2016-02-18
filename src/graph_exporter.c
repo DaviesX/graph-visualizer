@@ -13,6 +13,8 @@
 #include <xercesc/util/XMLString.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 
+#include <string>
+
 extern "C" {
 #include "common.h"
 #include "bio_graph.h"
@@ -87,6 +89,77 @@ bool graph_exporter_write_txt_file(const struct bio_graph* self, const char* fil
         return true;
 }
 
+class GEXFContext
+{
+public:
+        GEXFContext(xercesc::DOMElement* container, xercesc::DOMDocument* doc) : m_doc(doc), m_container(container)
+        {}
+
+        xercesc::DOMDocument* get_document()
+        {
+                return m_doc;
+        }
+
+        xercesc::DOMElement* get_container()
+        {
+                return m_container;
+        }
+
+        int next_global_edge_count()
+        {
+                return m_glb_edges_count ++;
+        }
+private:
+        xercesc::DOMDocument*   m_doc;
+        xercesc::DOMElement*    m_container;
+        int                     m_glb_edges_count = 0;
+};
+
+static void __gexf_write_node_visitor(const struct bio_graph_vertex* v, void* data)
+{
+        int vid = bio_graph_vertex_get_id(v);
+
+        GEXFContext* gexfctx = static_cast<GEXFContext*>(data);
+        // <node id="Q8L765" label="Q8L765">
+        //  <attvalues>
+        //   <attvalue for="0" value="Q8L765" />
+        //  </attvalues>
+        // </node>
+        xercesc::DOMElement* node = gexfctx->get_document()->createElement(xercesc::XMLString::transcode("node"));
+        node->setAttribute(xercesc::XMLString::transcode("id"),
+                           xercesc::XMLString::transcode(std::to_string(vid).c_str()));
+        node->setAttribute(xercesc::XMLString::transcode("label"),
+                           xercesc::XMLString::transcode(std::to_string(vid).c_str()));
+
+        xercesc::DOMElement* node_attrs = gexfctx->get_document()->createElement(xercesc::XMLString::transcode("attributes"));
+        xercesc::DOMElement* node_attr = gexfctx->get_document()->createElement(xercesc::XMLString::transcode("attribute"));
+        node_attr->setAttribute(xercesc::XMLString::transcode("for"), xercesc::XMLString::transcode("0"));
+        node_attr->setAttribute(xercesc::XMLString::transcode("value"),
+                                xercesc::XMLString::transcode(std::to_string(vid).c_str()));
+        node_attrs->appendChild(node_attr);
+        node->appendChild(node_attrs);
+        gexfctx->get_container()->appendChild(node);
+}
+
+static void __gexf_write_edge_visitor(const struct bio_graph_vertex* v0, const struct bio_graph_vertex* v1, void* data)
+{
+        int v0id = bio_graph_vertex_get_id(v0);
+        int v1id = bio_graph_vertex_get_id(v1);
+
+        GEXFContext* gexfctx = static_cast<GEXFContext*>(data);
+        // <edge id="0" source="Q8L765" target="Q94B33" weight="1.1" />
+        xercesc::DOMElement* edge = gexfctx->get_document()->createElement(xercesc::XMLString::transcode("edge"));
+        edge->setAttribute(xercesc::XMLString::transcode("id"),
+                           xercesc::XMLString::transcode(std::to_string(gexfctx->next_global_edge_count()).c_str()));
+        edge->setAttribute(xercesc::XMLString::transcode("source"),
+                           xercesc::XMLString::transcode(std::to_string(v0id).c_str()));
+        edge->setAttribute(xercesc::XMLString::transcode("target"),
+                           xercesc::XMLString::transcode(std::to_string(v1id).c_str()));
+        edge->setAttribute(xercesc::XMLString::transcode("weight"),
+                           xercesc::XMLString::transcode("1.0"));
+        gexfctx->get_container()->appendChild(edge);
+}
+
 bool graph_exporter_write_gexf_file(const struct bio_graph* self, const char* filename)
 {
         assert(self);
@@ -97,39 +170,66 @@ bool graph_exporter_write_gexf_file(const struct bio_graph* self, const char* fi
                 printf("failed to initiailze xercesc\n");
                 return false;
         }
-        xercesc::DOMImplementation* impl = xercesc::DOMImplementation::getImplementation();
-        xercesc::DOMLSOutput* output_desc = ((xercesc::DOMImplementationLS*) impl)->createLSOutput();
-        xercesc::XMLFormatTarget* target = new xercesc::LocalFileFormatTarget(xercesc::XMLString::transcode(filename));
 
+
+        xercesc::DOMImplementation* impl = xercesc::DOMImplementationRegistry::getDOMImplementation(
+                        xercesc::XMLString::transcode("LS"));
         // write header
         xercesc::DOMDocument* doc = impl->createDocument();
+        xercesc::DOMElement* gexf_header = doc->createElement(xercesc::XMLString::transcode("gexf"));
+        gexf_header->setAttribute(xercesc::XMLString::transcode("xmlns"),
+                                  xercesc::XMLString::transcode("http://www.gexf.net/1.1draft"));
+        gexf_header->setAttribute(xercesc::XMLString::transcode("version"),
+                                  xercesc::XMLString::transcode("1.1"));
+        doc->appendChild(gexf_header);
+        // <graph defaultedgetype="undirected" mode="static">
         xercesc::DOMElement* graph_elm = doc->createElement(xercesc::XMLString::transcode("graph"));
+        graph_elm->setAttribute(xercesc::XMLString::transcode("defaultedgetype"), xercesc::XMLString::transcode("undirected"));
+        graph_elm->setAttribute(xercesc::XMLString::transcode("mode"), xercesc::XMLString::transcode("static"));
+        gexf_header->appendChild(graph_elm);
         // <attributes class="node" mode="static">
         //  <attribute id="0" title="gname" type="string" />
         // </attributes>
-        xercesc::DOMNode* attris = graph_elm->appendChild(doc->createTextNode(xercesc::XMLString::transcode("attributes")));
+        xercesc::DOMElement* attris = doc->createElement(xercesc::XMLString::transcode("attributes"));
+        attris->setAttribute(xercesc::XMLString::transcode("class"), xercesc::XMLString::transcode("node"));
+        attris->setAttribute(xercesc::XMLString::transcode("mode"), xercesc::XMLString::transcode("static"));
+        graph_elm->appendChild(attris);
+        xercesc::DOMElement* attri0 = doc->createElement(xercesc::XMLString::transcode("attribute"));
+        attri0->setAttribute(xercesc::XMLString::transcode("id"), xercesc::XMLString::transcode("0"));
+        attri0->setAttribute(xercesc::XMLString::transcode("title"), xercesc::XMLString::transcode("gname"));
+        attri0->setAttribute(xercesc::XMLString::transcode("type"), xercesc::XMLString::transcode("string"));
+        attris->appendChild(attri0);
 
         // node section
-        int i;
-        for (i = 0; i < bio_graph_get_vertex_num(self); i ++) {
-        }
+        xercesc::DOMElement* nodes = doc->createElement(xercesc::XMLString::transcode("nodes"));
+        GEXFContext node_ctx(nodes, doc);
+        bio_graph_visit_vertices(self, __gexf_write_node_visitor, &node_ctx);
+        graph_elm->appendChild(nodes);
 
         // edge section
-        int num_edge = 0;
-        bio_graph_visit_edges(self, __edge_count_visitor, &num_edge);
-        fprintf(f, "%d\n", num_edge);
-        bio_graph_visit_edges(self, __gw_edge_writer_visitor, f);
-        fclose(f);
+        xercesc::DOMElement* edges = doc->createElement(xercesc::XMLString::transcode("edges"));
+        GEXFContext edge_ctx(edges, doc);
+        bio_graph_visit_edges(self, __gexf_write_edge_visitor, &edge_ctx);
+        graph_elm->appendChild(edges);
 
-        delete target;
+        // serialize the DOM tree
+        xercesc::XMLFormatTarget* file_target = new xercesc::LocalFileFormatTarget(xercesc::XMLString::transcode(filename));
+        xercesc::DOMLSOutput* output_desc = ((xercesc::DOMImplementationLS*) impl)->createLSOutput();
+        output_desc->setByteStream(file_target);
+
+        xercesc::DOMLSSerializer* serializer = ((xercesc::DOMImplementationLS*) impl)->createLSSerializer();
+        if (serializer->getDomConfig()->canSetParameter(xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true))
+                serializer->getDomConfig()->setParameter(xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true);
+        serializer->write(doc, output_desc);
+
+        delete file_target;
         xercesc::XMLPlatformUtils::Terminate();
         return false;
 }
 
 static void __edge_count_visitor(const struct bio_graph_vertex* v0, const struct bio_graph_vertex* v1, void* edge_num)
 {
-        int e = *(int*) edge_num;
-        *(int*) edge_num = e + 1;
+        (*static_cast<int*>(edge_num)) ++;
 }
 
 static void __gw_edge_writer_visitor(const struct bio_graph_vertex* v0, const struct bio_graph_vertex* v1, void* file_ptr)
