@@ -216,7 +216,9 @@ static void __bio_graph_traverse_dfs2(const struct bio_graph_vertex* vert, bool*
         // copy current vertex
         struct bio_graph_list* list = vert->head;
         while (list->list_next) {
-                visitor(vert, list->vert_next, user_data);
+                if (!visited_vert[list->vert_next->id]) {
+                        visitor(vert, list->vert_next, user_data);
+                }
                 list = list->list_next;
         }
         // mark visited and recurse

@@ -2780,7 +2780,7 @@
 
 1444988809 /usr/include/gtk-3.0/gtk/gtk-autocleanups.h
 
-1444189660 source:/home/davis/bio_graph/src/bio_graph.c
+1455836518 source:/home/davis/bio_graph/src/bio_graph.c
 	"common.h"
 	"bio_graph.h"
 
@@ -2819,4 +2819,24 @@
 	"graph_display.h"
 
 1444196685 /home/davis/bio_graph/src/graph_exporter.h
+
+1455777213 source:/home/davis/bio_graph/src/graph_exporter.c
+	<xercesc/dom/DOM.hpp>
+	<xercesc/dom/DOMDocument.hpp>
+	<xercesc/dom/DOMDocumentType.hpp>
+	<xercesc/dom/DOMElement.hpp>
+	<xercesc/dom/DOMImplementation.hpp>
+	<xercesc/dom/DOMImplementationLS.hpp>
+	<xercesc/dom/DOMNodeIterator.hpp>
+	<xercesc/dom/DOMNodeList.hpp>
+	<xercesc/dom/DOMText.hpp>
+	<xercesc/parsers/XercesDOMParser.hpp>
+	<xercesc/util/XMLUni.hpp>
+	<xercesc/util/XMLString.hpp>
+	<xercesc/framework/LocalFileFormatTarget.hpp>
+	<string>
+	"common.h"
+	"bio_graph.h"
+	"graph_display.h"
+	"graph_exporter.h"
 
