@@ -41,6 +41,19 @@ static const char* strip_prespace(const char* line)
         return line;
 }
 
+static void strip_useless_ending(char* line)
+{
+        int l = strlen(line);
+        if (l == 0) return ;
+        while (true) {
+                char c = line[l - 1];
+                if (c == '\n' || c == '\r' || c == '\t' || c == ' ') {
+                        line[l - 1] = '\0';
+                        l --;
+                } else break;
+        }
+}
+
 static void free_node_dict(char** node_dict, int num_nodes)
 {
         int i;
@@ -177,7 +190,9 @@ struct bio_graph* graph_importer_read_gw_file(const char* filename)
         }
         char buffer[c_MaxLineLength];
         // verify header
-        if (!fgets(buffer, c_MaxLineLength, f) || 0 != strncmp("LEDA.GRAPH", buffer, strlen("LEDA.GRAPH"))) {
+        const char* not_empty = fgets(buffer, c_MaxLineLength, f);
+        strip_useless_ending(buffer);
+        if (!not_empty || 0 != strcmp("LEDA.GRAPH", buffer)) {
                 printf("bad LEDA(.gw) graph file: %s invalid header, missing identifier LEDA.GRAPH\n", filename);
                 fclose(f);
                 return nullptr;
@@ -193,7 +208,8 @@ struct bio_graph* graph_importer_read_gw_file(const char* filename)
         }
         // node section
         int num_nodes;
-        if (1 != fscanf(f, "%d", &num_nodes)) {
+        fgets(buffer, c_MaxLineLength, f), strip_useless_ending(buffer);
+        if (1 != sscanf(buffer, "%d", &num_nodes)) {
                 fclose(f);
                 printf("bad LEDA(.gw) graph file: %s missing node number\n", filename);
                 return nullptr;
@@ -216,7 +232,8 @@ struct bio_graph* graph_importer_read_gw_file(const char* filename)
 
         // edge section
         int num_edge;
-        if (1 != fscanf(f, "%d", &num_edge)) {
+        fgets(buffer, c_MaxLineLength, f), strip_useless_ending(buffer);
+        if (1 != sscanf(buffer, "%d", &num_edge)) {
                 fclose(f);
                 bio_graph_free(self);
                 printf("bad LEDA(.gw) graph file: %s missing edge number\n", filename);
@@ -232,6 +249,7 @@ struct bio_graph* graph_importer_read_gw_file(const char* filename)
                 if (3 != sscanf(buffer, "%d %d %s", &v0, &v1, unused)) {
                         continue;
                 }
+                strip_useless_ending(buffer);
                 bio_graph_make_edge_undirected(self, v0 - 1, v1 - 1);
         }
 

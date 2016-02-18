@@ -2,36 +2,6 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="graph_exporter.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="9492" topLine="201" />
-		</Cursor>
-	</File>
-	<File name="graph_exporter.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="496" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="common.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="130" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="graph_importer.c" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="5254" topLine="86" />
-		</Cursor>
-		<Folding>
-			<Collapse line="8" />
-			<Collapse line="38" />
-			<Collapse line="44" />
-		</Folding>
-	</File>
-	<File name="graph_display.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="89" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="graph_display.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="12897" topLine="357" />
@@ -40,17 +10,17 @@
 			<Collapse line="4" />
 		</Folding>
 	</File>
-	<File name="graph_importer.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="graph_exporter.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="318" topLine="0" />
+			<Cursor1 position="496" topLine="0" />
 		</Cursor>
 		<Folding>
 			<Collapse line="0" />
 		</Folding>
 	</File>
-	<File name="bio_graph.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="bio_graph.c" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8744" topLine="55" />
+			<Cursor1 position="7754" topLine="36" />
 		</Cursor>
 		<Folding>
 			<Collapse line="5" />
@@ -68,20 +38,27 @@
 			<Collapse line="203" />
 			<Collapse line="208" />
 			<Collapse line="214" />
-			<Collapse line="233" />
-			<Collapse line="262" />
-			<Collapse line="267" />
-			<Collapse line="272" />
+			<Collapse line="235" />
+			<Collapse line="251" />
+			<Collapse line="259" />
+			<Collapse line="264" />
+			<Collapse line="269" />
+			<Collapse line="274" />
 		</Folding>
 	</File>
-	<File name="bio_graph.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="graph_display.h" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="398" topLine="4" />
+			<Cursor1 position="89" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="main.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="common.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11501" topLine="209" />
+			<Cursor1 position="130" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="main.c" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="11501" topLine="14" />
 		</Cursor>
 		<Folding>
 			<Collapse line="7" />
@@ -90,6 +67,41 @@
 			<Collapse line="76" />
 			<Collapse line="104" />
 			<Collapse line="206" />
+		</Folding>
+	</File>
+	<File name="graph_importer.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="318" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="0" />
+		</Folding>
+	</File>
+	<File name="bio_graph.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1230" topLine="0" />
+		</Cursor>
+		<Folding>
+			<Collapse line="1" />
+		</Folding>
+	</File>
+	<File name="graph_importer.c" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9395" topLine="189" />
+		</Cursor>
+		<Folding>
+			<Collapse line="8" />
+			<Collapse line="57" />
+		</Folding>
+	</File>
+	<File name="graph_exporter.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="9076" topLine="18" />
+		</Cursor>
+		<Folding>
+			<Collapse line="118" />
+			<Collapse line="144" />
+			<Collapse line="163" />
 		</Folding>
 	</File>
 </CodeBlocks_layout_file>
