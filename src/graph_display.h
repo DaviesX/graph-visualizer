@@ -1,7 +1,11 @@
 #ifndef GRAPH_DISPLAY_H_INCLUDED
 #define GRAPH_DISPLAY_H_INCLUDED
 
+#ifdef USE_GTK
 #include <gtk/gtk.h>
+#else
+#define GtkWidget       void
+#endif // USE_GTK
 
 __attribute__((align(1))) struct graph_display_color {
         union {

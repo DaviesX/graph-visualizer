@@ -7,6 +7,48 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
+				<Option output="../bio-graph-gtk-dbg" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="--convert ./gw_graph/yeast.gw -o ./yeast.gexf" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="`pkg-config --cflags gtk+-3.0`" />
+					<Add option="-DUSE_GTK" />
+				</Compiler>
+				<Linker>
+					<Add option="-lxerces-c" />
+					<Add option="`pkg-config --libs gtk+-3.0`" />
+					<Add option="-lpthread" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="../bio-graph-gtk" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="./txt_graph/n100.txt --generate-display 640 480 --accelerate-structure none" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-Ofast" />
+					<Add option="-flto" />
+					<Add option="-march=native" />
+					<Add option="`pkg-config --cflags gtk+-3.0`" />
+					<Add option="-DUSE_GTK" />
+				</Compiler>
+				<Linker>
+					<Add option="-Ofast" />
+					<Add option="-flto" />
+					<Add option="-march=native" />
+					<Add option="-lxerces-c" />
+					<Add option="`pkg-config --libs gtk+-3.0`" />
+					<Add option="-lpthread" />
+				</Linker>
+			</Target>
+			<Target title="Debug_No_GTK">
 				<Option output="../bio-graph-dbg" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Debug/" />
@@ -16,8 +58,13 @@
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add option="-lxerces-c" />
+					<Add option="-lpthread" />
+					<Add option="-static" />
+				</Linker>
 			</Target>
-			<Target title="Release">
+			<Target title="Release_No_GTK">
 				<Option output="../bio-graph" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../" />
 				<Option object_output="obj/Release/" />
@@ -34,18 +81,16 @@
 					<Add option="-Ofast" />
 					<Add option="-flto" />
 					<Add option="-march=native" />
+					<Add option="-lxerces-c" />
+					<Add option="-lpthread" />
+					<Add option="-static" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-std=c++14" />
 			<Add option="-fexceptions" />
-			<Add option="`pkg-config gtk+-3.0 --cflags`" />
 		</Compiler>
-		<Linker>
-			<Add option="`pkg-config gtk+-3.0 --libs`" />
-			<Add option="-lxerces-c" />
-		</Linker>
 		<Unit filename="bio_graph.c">
 			<Option compilerVar="CC" />
 		</Unit>

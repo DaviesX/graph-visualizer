@@ -282,7 +282,9 @@ struct graph_display* graph_display_create(enum AccelerateMethod acc)
         memset(self, 0, sizeof(*self));
         self->width     = 800;
         self->height    = 600;
+#ifdef USE_GTK
         self->stride    = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, self->width);
+#endif
         self->ps        = self->stride/self->width;
         self->buffer    = malloc(self->stride*self->height);
 
@@ -330,7 +332,9 @@ void graph_display_set_dimension(struct graph_display* self, int width, int heig
         if (height <= 0) {
                 self->height = 600;
         }
+#ifdef USE_GTK
         self->stride    = cairo_format_stride_for_width(CAIRO_FORMAT_RGB24, self->width);
+#endif // USE_GTK
         self->ps        = self->stride/self->width;
         self->buffer    = malloc(self->stride*self->height);
 }
@@ -680,6 +684,7 @@ struct gtk_display_pack {
         bool                            first_time;
 };
 
+#ifdef USE_GTK
 static gboolean __display_callback(GtkWidget *widget, cairo_t *cairo, gpointer user_data)
 {
         struct gtk_display_pack* pack           = user_data;
@@ -734,14 +739,19 @@ static void __make_gtk_window(struct graph_display* self, struct bio_graph* g)
         gtk_main();
 }
 
+#endif // USE_GTK
+
+
 void graph_display_progressive_draw_to_gtk_screen(struct graph_display* self, struct bio_graph* g,
                                                   GtkWidget* widget, int* argc, char*** argv)
 {
+#ifdef USE_GTK
         printf("Launching gui for display...\n");
         if (!widget) {
                 gtk_init(argc, argv);
                 __make_gtk_window(self, g);
         }
+#endif // USE_GTK
 }
 
 const void* graph_display_fetch_memory(const struct graph_display* self, int* width, int* height, int* ps)
